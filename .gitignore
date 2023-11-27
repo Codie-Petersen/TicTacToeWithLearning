@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 
 test.py
+brain1.json
+brain2.json

@@ -108,6 +108,7 @@ class Game:
             winner = self.boards[game_id].winner
             self.boards.pop(game_id)
             return winner
+        return -1
     
     def get_visual_board(self, game_id: str):
         """

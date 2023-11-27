@@ -37,6 +37,8 @@ class Brain:
 
         :return: The current board state.
         """
+        if len(self.past_moves) == 0:
+            return "_" * 9
         return self.past_moves[-1]
 
     def get_board_state_rewards(self):
@@ -103,8 +105,8 @@ class Agent:
         moves = [i for i, x in enumerate(board_state) if x == "_"] #Moves in board class style.
         #Create board state combinations based on the possible moves
         board_state_combinations = []
+        
         for move in moves:
-            board_combo = board_state
             board_combo = self._set_board_combo(board_state, move, self.marker)
             board_state_combinations.append(board_combo)
 
@@ -116,7 +118,6 @@ class Agent:
                 "index": move, 
                 "reward": rewards.get(combo, {}).get("reward", 0)
             }
-        
         return move_dict
 
     def _set_board_combo(self, board, move, marker):
