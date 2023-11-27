@@ -38,7 +38,9 @@ def load_agent(brain_file, marker):
 
 if __name__ == "__main__":
     DEBUG = False
-    SELF_PLAY = False
+    SELF_PLAY = input("Self play? (y/n): ") == "y"
+    if SELF_PLAY:
+        epochs = int(input("Number of epochs: "))
     if input("Load brain? (y/n): ") == "y":
         brain_file = ".\\brain1.json"
         agent1 = load_agent(brain_file, "X")
@@ -48,7 +50,6 @@ if __name__ == "__main__":
         agent1 = Agent(marker="X")
         agent2 = Agent(marker="O")
     board = Board()
-    epochs = 100000
 
     if SELF_PLAY:
         for epoch in tqdm(range(epochs)):
