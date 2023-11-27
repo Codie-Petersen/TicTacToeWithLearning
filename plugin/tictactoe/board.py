@@ -1,5 +1,3 @@
-"""Basic board for TicTacToe game."""
-
 class Board:
 
     def __init__(self):

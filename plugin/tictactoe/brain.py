@@ -1,11 +1,3 @@
-"""
-A simple memoization based reward table for TicTacToe.
-The reward table is a dictionary with the key being the board state and the value being the reward.
-Inside each board state, you add the next board state as the key and the reward as the value.
-The idea is to nest moves inside of moves to create a tree of moves.
-This is important because there are multiple ways to get to the same board state, in particular the
-end game states. You want to ensure that you are rewarding the correct path to the end game state.
-"""
 class Brain:
 
     def __init__(self):
