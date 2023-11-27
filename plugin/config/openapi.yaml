@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Your Plugin Name
-  description: A description of your plugin.
+  title: TicTacToe Super Agent
+  description: A tic tac toe agent that learns to play the game.
   version: "v1"
 servers:
   - url: PLUGIN_HOSTNAME

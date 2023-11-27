@@ -1,9 +1,9 @@
 {
     "schema_version": "v1",
-    "name_for_human": "Your Plugin Name",
-    "name_for_model": "plugin",
-    "description_for_human": "A description of your plugin.",
-    "description_for_model": "A description of your plugin for the AI.",
+    "name_for_human": "Tic Tac Toe Super Agent",
+    "name_for_model": "tictactoe",
+    "description_for_human": "A tic tac toe agent that uses a simple reinforcement learning algorithm to learn from every game.",
+    "description_for_model": "A tic tac toe agent that learns from every game.",
     "auth": {
       "type": "none"
     },
@@ -13,6 +13,6 @@
       "is_user_authenticated": false
     },
     "logo_url": "LOGO_ROUTE",
-    "contact_email": "email@example.com",
-    "legal_info_url": "example.com"
+    "contact_email": "https://www.linkedin.com/in/petersen-synthetic-intel/",
+    "legal_info_url": "https://github.com/Codie-Petersen/TicTacToeWithLearning/blob/main/LICENSE"
   }
