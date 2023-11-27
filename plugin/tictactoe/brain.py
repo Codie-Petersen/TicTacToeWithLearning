@@ -57,4 +57,3 @@ class Brain:
             else:
                 current_level[key]["reward"] = current_level[key].get("reward", 0)
             current_level = current_level[key]
-
