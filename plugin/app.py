@@ -1,4 +1,6 @@
 from plugin.routes.info import info_blueprint as info
+from plugin.tictactoe.agent import Agent
+from plugin.tictactoe.game import Game
 from quart_cors import cors
 import asyncio
 import signal
@@ -15,6 +17,8 @@ class App():
         self.app.register_blueprint(info)
         self.host = host
         self.port = port
+        self.agent: Agent = Agent(marker="O")
+        self.Game: Game = Game()
 
     def _handle_sigint(self, sig, frame):
         """Help shutdown the app."""

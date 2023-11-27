@@ -1,3 +1,5 @@
+from typing import Dict
+
 class Board:
 
     def __init__(self):
@@ -10,6 +12,7 @@ class Board:
         ]
         self.winner = None
         self.game_over = False
+        self.last_player = None
 
     def print_board(self):
         """Print the board in a nice format where the index of the move is the position if the position is empty."""
@@ -22,15 +25,23 @@ class Board:
             print("|", a, "|", b, "|", c, "|")
             print("-------------")
 
-    def make_move(self, position, player):
+    def make_move(self, position: int):
         """
         Make a move on the board.
 
         :param position: The position to make the move.
         :param player: The player making the move.
         """
+        if self.last_player == None:
+            player = "X"
+        elif self.last_player == "X":
+            player = "O"
+        else:
+            player = "X"
+
         if self.board[position] == "_":
             self.board[position] = player
+            self.last_player = player
             self.check_for_winner()
         else:
             raise Exception("Invalid move")
@@ -68,3 +79,46 @@ class Board:
         self.board = ["_" for _ in range(9)]
         self.winner = None
         self.game_over = False
+
+
+class Game:
+
+    def __init__(self):
+        """Initialize the game environment."""
+        self.boards: Dict[str, Board] = {}
+        
+    def new_game(self, game_id: str):
+        """
+        Create a new game.
+
+        :param game_id: The id of the game.
+        """
+        self.boards[game_id] = Board()
+    
+    def make_move(self, game_id: str, position: int):
+        """
+        Make a move on the board.
+
+        :param game_id: The id of the game.
+        :param position: The position to make the move.
+        :param player: The player making the move.
+        """
+        self.boards[game_id].make_move(position)
+        if self.boards[game_id].is_game_over():
+            winner = self.boards[game_id].winner
+            self.boards.pop(game_id)
+            return winner
+    
+    def get_visual_board(self, game_id: str):
+        """
+        Get the visual board.
+
+        :param game_id: The id of the game.
+        """
+        board = ""
+        for i in range(3):
+            a = i * 3 if self.boards[game_id].board[i * 3] == "_" else self.boards[game_id].board[i * 3]
+            b = i * 3 + 1 if self.boards[game_id].board[i * 3 + 1] == "_" else self.boards[game_id].board[i * 3 + 1]
+            c = i * 3 + 2 if self.boards[game_id].board[i * 3 + 2] == "_" else self.boards[game_id].board[i * 3 + 2]
+            board += f"| {a} | {b} | {c} |\n"
+        return board

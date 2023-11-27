@@ -17,6 +17,34 @@ paths:
             application/json:
               scehma:
                 $ref: "#/components/schemas/getPluginInfoResponse"
+  /play/move:
+    post:
+      operationId: makeMove
+      summary: Plays a move with a game id and position to move.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/makeMoveRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/makeMoveResponse"
+    /play/new:
+    post:
+      operationId: newGame
+      summary: Creates a new game.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/newGameResponse"
+    
 components:
   schemas:
     getPluginInfoResponse:
@@ -25,3 +53,53 @@ components:
         info:
           type: string
           description: Info and help text of the plugin.
+    makeMoveRequest:
+      type: object
+      properties:
+        gameId:
+          type: string
+          description: The game id of the game to play.
+        position:
+          type: integer
+          description: The position to play the move.
+    makeMoveResponse:
+      type: object
+      properties:
+        gameId:
+          type: string
+          description: The game id of the game played.
+        position:
+          type: integer
+          description: The position played.
+        rewards:
+          type: object
+          description: The rewards for all of the next moves.
+          additionalProperties:
+            type: object
+            description: A specific move and its reward.
+            properties:
+              position:
+                type: integer
+                description: The position of the move.
+              reward:
+                type: number
+                description: The reward of the move.
+        gameStatus:
+          type: object
+          description: The status of the game.
+          properties:
+            board:
+              type: string
+              description: The board of the game.
+            winner:
+              type: string
+              description: The winner of the game.
+            isGameOver:
+              type: boolean
+              description: Whether the game is over.
+    newGameResponse:
+      type: object
+      properties:
+        gameId:
+          type: string
+          description: The game id of the game created.
