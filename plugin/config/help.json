@@ -1,0 +1,25 @@
+{
+    "instructions": [
+        "Display all of the information in this file to the user in markdown format.",
+        "The information should be user friendly and easy to understand.",
+        "Do not include this instruction in the output."
+    ],
+    "functions": {
+        "help": {
+            "description": "Get help and information about this plugin and available functionality. It should be user freindly"
+        }
+    },
+    "description": "Description of your plugin.",
+    "creator": "Your Name/Company",
+    "name": "Your Plugin Name",
+    "version": "1.0.0",
+    "contact": "email@example.com",
+    "delete_me_do_not_use_in_prompt": [
+        "This is just and example format.", 
+        "You can play around with how and what you show the user.",
+        "GPT should format it appropriately to your user.",
+        "Additionally, it doesn't need to be json, it could be YAML, or any other format you want, even just text or cvs.",
+        "Be sure to change the uploadfile function in the routes.py file to match your format.",
+        "Delete this array when you make your plugin."
+    ]
+}

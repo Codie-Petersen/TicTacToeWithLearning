@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: Your Plugin Name
+  description: A description of your plugin.
+  version: "v1"
+servers:
+  - url: PLUGIN_HOSTNAME
+paths:
+  /info/help:
+    get:
+      operationId: getPluginInfo
+      summary: Lists information about the plugin including help text.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              scehma:
+                $ref: "#/components/schemas/getPluginInfoResponse"
+components:
+  schemas:
+    getPluginInfoResponse:
+      type: object
+      properties:
+        info:
+          type: string
+          description: Info and help text of the plugin.

@@ -1,0 +1,18 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Your Plugin Name",
+    "name_for_model": "plugin",
+    "description_for_human": "A description of your plugin.",
+    "description_for_model": "A description of your plugin for the AI.",
+    "auth": {
+      "type": "none"
+    },
+    "api": {
+      "type": "openapi",
+      "url": "OPENAPI_YAML_ROUTE",
+      "is_user_authenticated": false
+    },
+    "logo_url": "LOGO_ROUTE",
+    "contact_email": "email@example.com",
+    "legal_info_url": "example.com"
+  }
