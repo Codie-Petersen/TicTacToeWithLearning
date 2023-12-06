@@ -1,5 +1,4 @@
 from typing import Dict
-
 class Board:
 
     def __init__(self):
@@ -13,6 +12,7 @@ class Board:
         self.winner = None
         self.game_over = False
         self.last_player = None
+        self.last_move = None
 
     def print_board(self):
         """Print the board in a nice format where the index of the move is the position if the position is empty."""
@@ -32,6 +32,7 @@ class Board:
         :param position: The position to make the move.
         :param player: The player making the move.
         """
+        self.last_move = position
         if self.last_player == None:
             player = "X"
         elif self.last_player == "X":
@@ -57,6 +58,17 @@ class Board:
             self.game_over = True
             return
         self.game_over = False
+        
+    def check_if_last_move_blocked_win(self):
+        """Check if the last move blocked a win."""
+        projected_player = "X" if self.last_player == "O" else "O"
+        projected_board = self.board.copy()
+        projected_board[self.last_move] = projected_player
+        combos = self.winning_combinations.copy()
+        for combo in combos:
+            if projected_board[combo[0]] == projected_board[combo[1]] == projected_board[combo[2]] != "_":
+                return True
+        return False
     
     def get_valid_moves(self):
         """Get the valid moves."""

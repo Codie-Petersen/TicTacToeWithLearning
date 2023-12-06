@@ -14,7 +14,7 @@ class Brain:
         self.past_moves.append(board_state)
         self._set_nested_rewards(self.past_moves)
 
-    def caclulate_reward(self, reward):
+    def caclulate_reward(self, reward, reset=True):
         """
         Calculate the reward, add it to the reward table, and reset the past moves.
 
@@ -29,7 +29,8 @@ class Brain:
 
         #Add the rewards to the reward table
         self._set_nested_rewards(self.past_moves, rewards)
-        self.past_moves = []
+        if reset:
+            self.past_moves = []
     
     def get_current_board_state(self):
         """
@@ -66,7 +67,7 @@ class Brain:
             if key not in current_level:
                 current_level[key] = {}
             if rewards != 0:
-                current_level[key]["reward"] = (current_level[key].get("reward", 0) + rewards[k])/2
+                current_level[key]["reward"] = (current_level[key].get("reward", rewards[k]) + rewards[k])/2
             else:
                 current_level[key]["reward"] = current_level[key].get("reward", 0)
             current_level = current_level[key]
@@ -86,13 +87,13 @@ class Agent:
         """
         self.brain.add_move(board_state)
     
-    def calculate_reward(self, reward):
+    def calculate_reward(self, reward, reset=True):
         """
         Calculate the reward for the agent.
 
         :param reward: The reward to add to the agent.
         """
-        self.brain.caclulate_reward(reward)
+        self.brain.caclulate_reward(reward, reset)
     
     def get_possible_moves(self):
         """
