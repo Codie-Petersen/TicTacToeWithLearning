@@ -12,7 +12,7 @@ class Brain:
         :param board_state: The board state as a stirng of 9 characters.
         """
         self.past_moves.append(board_state)
-        self._set_nested_rewards(self.past_moves)
+        self._set_rewards(self.past_moves)
 
     def caclulate_reward(self, reward, reset=True):
         """
@@ -28,7 +28,7 @@ class Brain:
         rewards.reverse()
 
         #Add the rewards to the reward table
-        self._set_nested_rewards(self.past_moves, rewards)
+        self._set_rewards(self.past_moves, rewards)
         if reset:
             self.past_moves = []
     
@@ -55,6 +55,12 @@ class Brain:
             current_level = current_level[key]
         return current_level
     
+    def get_board_state_rewards_experimental(self):
+        """
+        Unlike the nested state reward table, this one is flat.
+        """
+        return self.reward_table
+    
     def _set_nested_rewards(self, keys, rewards=0):
         """
         Set a value in a nested dictionary given a list of keys.
@@ -72,12 +78,38 @@ class Brain:
                 current_level[key]["reward"] = current_level[key].get("reward", 0)
             current_level = current_level[key]
 
+    def _set_rewards(self, keys, rewards=[0]):
+        """
+        A function to set the rewards of a given board state.
+
+        :param keys: The keys to traverse the dictionary.
+        :param value: The value to set the reward to.
+        """
+        if rewards == [0]:
+            rewards = rewards*len(keys)
+        key = "-".join(keys)
+        for i in range(len(keys)):
+            key = "-".join(keys[:-i])
+            try:
+                if key not in self.reward_table:
+                    self.reward_table[key] = rewards[i]
+                else:
+                    self.reward_table[key] = (self.reward_table[key] + rewards[i])/2
+            except:
+                print("------------------")
+                print(key)
+                print(self.reward_table)
+                print(rewards)
+                print("------------------")
+                raise Exception("Error")
+
 
 class Agent:
 
     def __init__(self, marker: str, brain_file=None):
         self.brain = Brain()
         self.marker = marker
+        self.goal = ""
 
     def add_move(self, board_state):
         """
@@ -94,6 +126,23 @@ class Agent:
         :param reward: The reward to add to the agent.
         """
         self.brain.caclulate_reward(reward, reset)
+    
+    def set_goal(self):
+        """
+        From the reward table, set one of the best keys as the goal.
+        
+        :param goal: The goal to set for the agent.
+        """
+        rewards = self.brain.reward_table.copy()
+        keys = list(rewards.keys())
+        values = list(rewards.values())
+
+        #Get the best reward
+        best_reward = max(values)
+        best_reward_index = values.index(best_reward)
+        best_reward_key = keys[best_reward_index]
+        self.goal = best_reward_key
+
     
     def get_possible_moves(self):
         """
@@ -120,6 +169,43 @@ class Agent:
                 "reward": rewards.get(combo, {}).get("reward", 0)
             }
         return move_dict
+    
+    def get_possible_moves_experimental(self):
+        """
+        Unlike the nested state reward table, this one is flat.
+        """
+        board_state = self.brain.get_current_board_state()
+        temporal_state = "-".join(self.brain.past_moves)
+        moves = [i for i, x in enumerate(board_state) if x == "_"] #Moves in board class style.
+        #Create board state combinations based on the possible moves
+        board_state_combinations = []
+        
+        for move in moves:
+            board_combo = self._set_board_combo(board_state, move, self.marker)
+            board_state_combinations.append(board_combo)
+
+        #Dictionary of moves and rewards
+        move_dict = {}
+        rewards = self.brain.get_board_state_rewards_experimental()
+        for move, combo in zip(moves, board_state_combinations):
+            if temporal_state == "":
+                temporal_key = combo
+            else:
+                temporal_key = f"{temporal_state}-{combo}"
+            try:
+                move_dict[temporal_key] = { 
+                    "index": move, 
+                    "reward": rewards.get(temporal_key, 0)
+                }
+            except:
+                print("------------------")
+                print(temporal_key)
+                print(rewards)
+                print("------------------")
+                raise Exception("Error")
+
+        return move_dict
+
 
     def _set_board_combo(self, board, move, marker):
         """

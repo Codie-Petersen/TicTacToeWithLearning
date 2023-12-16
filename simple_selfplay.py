@@ -72,7 +72,7 @@ def self_play_loop(epochs: int, load_brains: bool=True, debug: bool=False):
             board.reset()
             while not board.is_game_over():
                 current_player = agent1 if board.last_player == agent2.marker else agent2
-                moves = current_player.get_possible_moves()
+                moves = current_player.get_possible_moves_experimental()
                 move = random_weighted_move(moves)
                 board.make_move(move)
                 board_move = board.get_board_state()
@@ -129,7 +129,7 @@ def play_human(brain_file: str):
                 move = int(input("Enter move: "))
             else:
                 #Computer player
-                moves = agent.get_possible_moves()
+                moves = agent.get_possible_moves_experimental()
                 move = get_best_move(moves)
             board.make_move(move)
             board_move = board.get_board_state()
